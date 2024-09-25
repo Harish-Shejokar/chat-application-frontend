@@ -1,0 +1,31 @@
+.chatBox{
+    background-color: aliceblue;
+}
+
+.box{
+    border: 2px solid blue;
+    margin: 0 auto;
+    width: 50%;
+    height: 50vh;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.inputBox{
+    /* position: absolute;
+    bottom: 0; */
+    display: flex;
+    width: 100%;
+    /* border: 2px solid black; */
+
+}
+
+.input{
+    width: 80%;
+    
+}
+.btn{
+    width: 20%;
+}
