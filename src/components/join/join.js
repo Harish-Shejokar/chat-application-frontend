@@ -29,10 +29,12 @@ const Login = () => {
     navigate("/chat",{state : {userName}})
   }
   return (
-    <div>
+    <div className='loginBox'>
+    <div className='innerBox'>
        Join Page
        <input type='text' placeholder='Enter Your Name' onChange={(e)=> setUserName(e.target.value)}/>
        <button onClick={handleJoinChat}>Join Chat</button>
+    </div>
     </div>
   )
 }

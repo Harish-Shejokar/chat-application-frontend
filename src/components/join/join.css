@@ -1,0 +1,13 @@
+
+
+.loginBox{
+    border: 2px solid crimson;
+    width: 50%;
+    /* margin: 30% auto; */
+    padding: 1rem;
+
+}
+
+.innerBox{
+    padding: 10px;
+}
