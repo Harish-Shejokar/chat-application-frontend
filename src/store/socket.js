@@ -17,7 +17,6 @@ export const SocketProvider = (props) => {
       <SocketContext.Provider value={socket}>
         {props.children}
       </SocketContext.Provider>
-
     </>
   )
 }

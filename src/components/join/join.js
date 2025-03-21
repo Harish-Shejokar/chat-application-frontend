@@ -26,6 +26,9 @@ const Login = () => {
   // }, [socket])
 
   const handleJoinChat = () => {
+    if(!userName || userName.length <= 0 || userName==" "){
+      return;
+    }
     navigate("/chat",{state : {userName}})
   }
   return (

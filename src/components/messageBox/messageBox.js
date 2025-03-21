@@ -1,12 +1,14 @@
 import React from 'react'
 import "./messageBox.css"
 
-const MessageBox = ({user, text, customClass}) => {
+const MessageBox = ({ user, text, customClass }) => {
   return (
-    <div className={"leftBox"}>
-       <span>{user}</span>
-       {" "}
-       <span>{text}</span>
+    <div className={customClass}>
+      <div className=''>
+        <span>{user}</span>
+        {" "}
+        <span>{text}</span>
+      </div>
     </div>
   )
 }

@@ -18,16 +18,18 @@ const Chat = () => {
   // const socket = io(ENDPOINT, { transports: ["websocket"] });
 
   const sendMessage = () => {
-    socket.emit("message", { message: msg, id })
+    if (msg.length > 0) {
+      socket.emit("message", { message: msg, id })
+      setMsg("");
+    }
 
-    setMsg("");
   }
 
   useEffect(() => {
 
     socket.on("sendMessage", ({ user, message, id }) => {
-      console.log(`${user} : ${message}`)
-      setAllChats([...allChats, {user, message, id}]);
+      console.log(`${user} : ${message} : ${id}`)
+      setAllChats([...allChats, { user, message, id }]);
     });
 
     return () => {
@@ -72,7 +74,9 @@ const Chat = () => {
 
   return (
     <div className='chatBox'>
-      <div>{allChats.length > 0 && allChats.map((elm, index) => <MessageBox user={elm.user} text={elm.message} customClass={""}/>)}</div>
+      <div className=''>{allChats.length > 0 && allChats.map((elm, index) =>
+        <MessageBox key={Math.random()} user={elm.user} text={elm.message} customClass={socket.id == elm.id ? "right" : "left"} />
+      )}</div>
       <div className=''>
         <div className='inputBox'>
           <input value={msg} className='input' type='text' onChange={(e) => setMsg(e.target.value)} />
