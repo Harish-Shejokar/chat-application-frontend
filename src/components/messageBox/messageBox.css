@@ -11,6 +11,22 @@
     color: black;
     /* height: auto; */
     word-wrap: break-word;
+    margin: 5px;
+    width: fit-content;
+    max-width: 15rem;
+    margin-left: auto;
+
+}
+
+.rightInnerBox{
+    padding: 10px;
+    background-color: rgb(103, 215, 124);
+    border-radius: 10px;
+    color: black;
+    /* height: auto; */
+    word-wrap: break-word;
     display: inline-block;
     margin: 5px;
+    width: fit-content;
+    max-width: 15rem;
 }

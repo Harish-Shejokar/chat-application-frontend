@@ -2,11 +2,12 @@ import React from 'react'
 import "./messageBox.css"
 
 const MessageBox = ({ user, text, customClass }) => {
+  customClass = customClass === "right" ? "rightInnerBox": "leftInnerBox";
   return (
     <div className={customClass}>
-      <div className=''>
-        <span>{user}</span>
-        {" "}
+      <div >
+        <span className=''>{user}</span>
+        {" : "}
         <span>{text}</span>
       </div>
     </div>

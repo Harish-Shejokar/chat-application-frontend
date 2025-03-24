@@ -4,6 +4,7 @@ import { useSocket } from '../../store/socket';
 // import {io} from 'socket.io-client'
 import "./chat.css";
 import MessageBox from '../messageBox/messageBox';
+import ScrollToBottom from "react-scroll-to-bottom"
 
 const Chat = () => {
   const [msg, setMsg] = useState("");
@@ -22,7 +23,6 @@ const Chat = () => {
       socket.emit("message", { message: msg, id })
       setMsg("");
     }
-
   }
 
   useEffect(() => {
@@ -58,7 +58,6 @@ const Chat = () => {
 
 
 
-
     // socket.on("userJoined", (data)=>{
     //   console.log(`${data.user} - ${data.message}`);
     // });
@@ -74,12 +73,16 @@ const Chat = () => {
 
   return (
     <div className='chatBox'>
-      <div className=''>{allChats.length > 0 && allChats.map((elm, index) =>
-        <MessageBox key={Math.random()} user={elm.user} text={elm.message} customClass={socket.id == elm.id ? "right" : "left"} />
-      )}</div>
+      
+      <div  className='box'>{allChats.length > 0 && allChats.map((elm, index) =>
+        <MessageBox key={Math.random()} user={elm.user} text={elm.message} customClass={socket.id === elm.id ? "left" : "right"} />
+      )}
+      </div>
+        
+      {/* </ScrollToBottom> */}
       <div className=''>
         <div className='inputBox'>
-          <input value={msg} className='input' type='text' onChange={(e) => setMsg(e.target.value)} />
+          <input onKeyUp={(event)=> event.key ==="Enter" ? sendMessage() : null } value={msg} className='input' type='text' onChange={(e) => setMsg(e.target.value)} />
           <button onClick={sendMessage} className='btn'>Send</button>
         </div>
       </div>
