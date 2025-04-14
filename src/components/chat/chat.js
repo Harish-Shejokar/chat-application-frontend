@@ -9,6 +9,7 @@ import ScrollToBottom from "react-scroll-to-bottom"
 const Chat = () => {
   const [msg, setMsg] = useState("");
   const [allChats, setAllChats] = useState([]);
+  const [liveUserCount, setLiveUserCount] = useState(0);
   const [id, setId] = useState("");
   const location = useLocation();
   const socket = useSocket();
@@ -38,10 +39,9 @@ const Chat = () => {
 
   }, [allChats])
 
-
-
+  
   useEffect(() => {
-    console.log("Inside useffect", socket.id);
+    console.log("==========Inside useffect==============", socket.id);
     setId(socket.id);
     socket.on("connect", () => {
       // console.log('event called abc')
@@ -52,15 +52,14 @@ const Chat = () => {
     socket.emit('joined', { user });
 
     socket.on("userJoined", (data) => {
-      console.log(`${data.message}`);
+      console.log(`${data.user} ${data.message}`);
       setAllChats([...allChats, data]);
     });
 
-
-
-    // socket.on("userJoined", (data)=>{
-    //   console.log(`${data.user} - ${data.message}`);
-    // });
+    socket.on("totalUsers", (data) => {
+      console.log("=====totalUsers======", data);
+      setLiveUserCount(data.totalUsers)
+    })
 
     socket.on("leave", (data) => console.log(data.message));
 
@@ -68,12 +67,12 @@ const Chat = () => {
       socket.emit("disconnect");
       socket.off();
     }
-
-  }, [socket])
+  }, [socket, user, liveUserCount])
 
   return (
+   
     <div className='chatBox'>
-      
+      <div className='border-b-2 border-white'>Total Live Users : {liveUserCount}</div>
       <div  className='box'>{allChats.length > 0 && allChats.map((elm, index) =>
         <MessageBox key={Math.random()} user={elm.user} text={elm.message} customClass={socket.id === elm.id ? "left" : "right"} />
       )}
@@ -86,7 +85,8 @@ const Chat = () => {
           <button onClick={sendMessage} className='btn'>Send</button>
         </div>
       </div>
-    </div>
+      </div>
+      
   )
 }
 
