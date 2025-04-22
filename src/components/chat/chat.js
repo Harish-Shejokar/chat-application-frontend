@@ -26,6 +26,12 @@ const Chat = () => {
     }
   }
 
+  // useEffect for new User Joining
+  useEffect(() => {
+    console.log("new joining connection")
+  },[socket])
+
+
   useEffect(() => {
 
     socket.on("sendMessage", ({ user, message, id }) => {
@@ -39,9 +45,11 @@ const Chat = () => {
 
   }, [allChats])
 
+
+
   
   useEffect(() => {
-    console.log("==========Inside useffect==============", socket.id);
+   
     setId(socket.id);
     socket.on("connect", () => {
       // console.log('event called abc')
@@ -52,7 +60,8 @@ const Chat = () => {
     socket.emit('joined', { user });
 
     socket.on("userJoined", (data) => {
-      console.log(`${data.user} ${data.message}`);
+      console.log(`${data.user} ${data.message} ${data.id}`);
+      console.log(data);
       setAllChats([...allChats, data]);
     });
 
@@ -62,13 +71,14 @@ const Chat = () => {
     })
 
     socket.on("leave", (data) => console.log(data.message));
-
+    console.log("#################################");
     return () => {
       socket.emit("disconnect");
       socket.off();
     }
-  }, [socket, user, liveUserCount])
+  }, [socket])
 
+  console.log(socket);
   return (
    
     <div className='chatBox'>

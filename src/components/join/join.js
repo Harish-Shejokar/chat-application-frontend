@@ -6,7 +6,7 @@ import { useSocket } from '../../store/socket';
 const Login = () => {
   const [userName, setUserName] = useState();
   const navigate = useNavigate();
-
+  const socket = useSocket();
 
 
   // const socket = useSocket();
@@ -29,7 +29,8 @@ const Login = () => {
     if(!userName || userName.length <= 0 || userName==" "){
       return;
     }
-    navigate("/chat",{state : {userName}})
+    navigate("/chat", { state: { userName } })
+    socket.emit('joined', { user:userName });
   }
   return (
     <div className='loginBox'>
