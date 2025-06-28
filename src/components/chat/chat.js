@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { useSocket } from '../../store/socket';
+import { useChatSocket, useSocket } from '../../store/socket';
 // import {io} from 'socket.io-client'
 import "./chat.css";
 import MessageBox from '../messageBox/messageBox';
@@ -13,6 +13,7 @@ const Chat = () => {
   const [id, setId] = useState("");
   const location = useLocation();
   const socket = useSocket();
+  const chatSocket = useChatSocket();
   const user = location.state.userName;
   // console.log("===============", socket)
 
@@ -28,15 +29,16 @@ const Chat = () => {
 
   // useEffect for new User Joining
   useEffect(() => {
-    console.log("new joining connection")
-  },[socket])
+    console.log("=======chatConnection======");
+    socket.emit("/connection", {});
+  },[chatSocket])
 
 
   useEffect(() => {
 
-    socket.on("sendMessage", ({ user, message, id }) => {
-      console.log(`${user} : ${message} : ${id}`)
-      setAllChats([...allChats, { user, message, id }]);
+    socket.on("sendMessage", ({ user, message, id,singleTick }) => {
+      console.log(`${user} : ${message} : ${id} : ${singleTick}`)
+      setAllChats([...allChats, { user, message, id, singleTick }]);
     });
 
     return () => {
@@ -60,31 +62,26 @@ const Chat = () => {
     socket.emit('joined', { user });
 
     socket.on("userJoined", (data) => {
-      console.log(`${data.user} ${data.message} ${data.id}`);
-      console.log(data);
       setAllChats([...allChats, data]);
     });
 
     socket.on("totalUsers", (data) => {
-      console.log("=====totalUsers======", data);
       setLiveUserCount(data.totalUsers)
     })
 
     socket.on("leave", (data) => console.log(data.message));
-    console.log("#################################");
     return () => {
       socket.emit("disconnect");
       socket.off();
     }
   }, [socket])
 
-  console.log(socket);
   return (
    
     <div className='chatBox'>
       <div className='border-b-2 border-white'>Total Live Users : {liveUserCount}</div>
       <div  className='box'>{allChats.length > 0 && allChats.map((elm, index) =>
-        <MessageBox key={Math.random()} user={elm.user} text={elm.message} customClass={socket.id === elm.id ? "left" : "right"} />
+        <MessageBox key={Math.random()} singleTick={elm.singleTick} user={elm.user} text={elm.message} customClass={socket.id === elm.id ? "left" : "right"} />
       )}
       </div>
         
